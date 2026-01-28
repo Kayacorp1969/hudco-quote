@@ -1,0 +1,1296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HUDCO - Request a Quote</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            padding: 20px;
+            line-height: 1.6;
+            color: #333;
+            min-height: 100vh;
+        }
+        .container { 
+            max-width: 900px; 
+            margin: 20px auto; 
+            background: white; 
+            border-radius: 15px; 
+            box-shadow: 0 10px 40px rgba(0,0,0,0.15); 
+            overflow: hidden;
+        }
+        .header { 
+            background: linear-gradient(135deg, #c8102e 0%, #a00d26 100%); 
+            color: white; 
+            padding: 40px 30px; 
+            text-align: center; 
+            position: relative;
+            overflow: hidden;
+        }
+        .header::before {
+            content: "";
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(0,0,0,0) 70%);
+            z-index: 0;
+        }
+        .header-content {
+            position: relative;
+            z-index: 1;
+        }
+        .header h1 { 
+            font-size: 36px; 
+            margin-bottom: 12px; 
+            letter-spacing: -0.5px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.25);
+            font-weight: 700;
+        }
+        .header p { 
+            font-size: 18px; 
+            opacity: 0.95; 
+            max-width: 650px;
+            margin: 0 auto;
+            font-weight: 300;
+        }
+        .form-content { 
+            padding: 40px; 
+        }
+        .section-title { 
+            font-size: 26px; 
+            color: #1a1a1a; 
+            margin: 35px 0 25px; 
+            padding-bottom: 10px; 
+            border-bottom: 3px solid #c8102e; 
+            display: flex; 
+            align-items: center; 
+            gap: 12px;
+            font-weight: 700;
+        }
+        .section-icon { 
+            font-size: 30px; 
+            background: #fff5f6;
+            width: 46px;
+            height: 46px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            color: #c8102e;
+            border: 2px solid #ffd9da;
+            flex-shrink: 0;
+        }
+        .form-section { 
+            margin-bottom: 35px; 
+            padding: 28px;
+            border-radius: 14px;
+            background: #fcfdff;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+            transition: all 0.35s ease;
+            border: 1px solid #f0f2f5;
+        }
+        .form-section:hover {
+            box-shadow: 0 6px 16px rgba(0,0,0,0.08);
+            transform: translateY(-2px);
+            border-color: #e9ecef;
+        }
+        .form-row { 
+            display: grid; 
+            grid-template-columns: 1fr 1fr; 
+            gap: 22px; 
+            margin-bottom: 22px; 
+        }
+        .form-row.single { 
+            grid-template-columns: 1fr; 
+        }
+        .form-group { 
+            display: flex; 
+            flex-direction: column; 
+        }
+        label { 
+            font-weight: 600; 
+            color: #2d3748; 
+            margin-bottom: 9px; 
+            font-size: 15px; 
+            display: flex;
+            align-items: center;
+        }
+        .required { 
+            color: #e53e3e; 
+            margin-left: 4px; 
+            font-size: 18px;
+            line-height: 1;
+        }
+        input, select, textarea { 
+            padding: 13px 16px; 
+            border: 2px solid #e2e8f0; 
+            border-radius: 10px; 
+            font-size: 16px; 
+            transition: all 0.3s; 
+            font-family: inherit;
+            background: white;
+            width: 100%;
+            font-weight: 500;
+        }
+        input:focus, select:focus, textarea:focus { 
+            outline: none; 
+            border-color: #c8102e; 
+            box-shadow: 0 0 0 3px rgba(200, 16, 46, 0.18); 
+            background: #fff9fa;
+        }
+        textarea { 
+            resize: vertical; 
+            min-height: 130px;
+            line-height: 1.55;
+        }
+        .attachment-container { 
+            border: 2px solid #eaeff5; 
+            border-radius: 14px; 
+            padding: 24px; 
+            margin-bottom: 22px; 
+            background: #f9fbfd;
+            position: relative;
+            transition: all 0.3s ease;
+            box-shadow: 0 3px 8px rgba(0,0,0,0.03);
+        }
+        .attachment-container:hover {
+            border-color: #cbd5e0;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+        }
+        .attachment-header { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            margin-bottom: 18px; 
+            padding-bottom: 14px;
+            border-bottom: 1px dashed #e2e8f0;
+        }
+        .attachment-number { 
+            font-weight: 700; 
+            color: #c8102e; 
+            font-size: 17px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .attachment-number::before {
+            content: "";
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            background: #c8102e;
+            border-radius: 50%;
+            box-shadow: 0 0 0 2px white, 0 0 0 3px #c8102e;
+        }
+        .remove-attachment { 
+            background: #e53e3e; 
+            color: white; 
+            border: none; 
+            padding: 8px 18px; 
+            border-radius: 8px; 
+            cursor: pointer; 
+            font-size: 14px; 
+            transition: all 0.25s; 
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+            font-weight: 500;
+        }
+        .remove-attachment:hover { 
+            background: #c53030; 
+            transform: translateY(-1px);
+            box-shadow: 0 3px 7px rgba(0,0,0,0.2);
+        }
+        .remove-attachment:active {
+            transform: translateY(0);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+        }
+        .add-attachment { 
+            background: white; 
+            color: #c8102e; 
+            border: 2px solid #c8102e; 
+            padding: 13px 28px; 
+            border-radius: 10px; 
+            cursor: pointer; 
+            font-size: 16px; 
+            font-weight: 600; 
+            transition: all 0.3s; 
+            display: inline-flex; 
+            align-items: center; 
+            gap: 10px;
+            margin-top: 12px;
+            box-shadow: 0 3px 8px rgba(200, 16, 46, 0.15);
+            font-weight: 600;
+        }
+        .add-attachment:hover { 
+            background: #c8102e; 
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(200, 16, 46, 0.3);
+        }
+        .add-attachment:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 6px rgba(200, 16, 46, 0.25);
+        }
+        .kit-type-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fill, minmax(195px, 1fr)); 
+            gap: 18px; 
+            margin-top: 18px;
+            padding: 10px 0;
+        }
+        .kit-option { 
+            display: flex; 
+            align-items: flex-start; 
+            gap: 12px; 
+            padding: 16px; 
+            border: 2px solid #eaeff5; 
+            border-radius: 12px; 
+            cursor: pointer; 
+            transition: all 0.3s; 
+            background: white;
+            flex-direction: column;
+            text-align: left;
+            min-height: 95px;
+            position: relative;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+        }
+        .kit-option:hover { 
+            border-color: #c8102e; 
+            background: #fff8f9;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.09);
+        }
+        .kit-option input[type="checkbox"] { 
+            width: 22px; 
+            height: 22px; 
+            cursor: pointer; 
+            margin-top: 2px;
+            accent-color: #c8102e;
+            flex-shrink: 0;
+        }
+        .kit-option label { 
+            margin: 0; 
+            cursor: pointer; 
+            font-weight: 600; 
+            font-size: 14.5px; 
+            line-height: 1.35;
+            display: block;
+            text-align: left;
+            padding-left: 2px;
+            color: #2d3748;
+        }
+        .kit-option small {
+            display: block;
+            color: #4a5568;
+            font-weight: 400;
+            margin-top: 4px;
+            font-size: 12.5px;
+            line-height: 1.4;
+        }
+        .kit-option.selected {
+            border-color: #c8102e;
+            background: #fff0f1;
+            box-shadow: 0 0 0 3px rgba(200, 16, 46, 0.12);
+        }
+        .kit-option.selected::after {
+            content: "✓";
+            position: absolute;
+            top: 8px;
+            right: 10px;
+            color: #c8102e;
+            font-weight: bold;
+            font-size: 20px;
+            text-shadow: 0 1px 1px rgba(255,255,255,0.7);
+        }
+        .submit-section { 
+            margin-top: 45px; 
+            padding-top: 35px; 
+            border-top: 2px solid #edf2f7; 
+            display: flex; 
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .submit-btn { 
+            background: linear-gradient(135deg, #c8102e 0%, #a00d26 100%); 
+            color: white; 
+            border: none; 
+            padding: 17px 50px; 
+            border-radius: 10px; 
+            font-size: 18px; 
+            font-weight: 700; 
+            cursor: pointer; 
+            transition: all 0.35s; 
+            min-width: 220px;
+            box-shadow: 0 5px 18px rgba(200, 16, 46, 0.35);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            letter-spacing: -0.3px;
+        }
+        .submit-btn:hover { 
+            transform: translateY(-3px); 
+            box-shadow: 0 7px 22px rgba(200, 16, 46, 0.45); 
+            background: linear-gradient(135deg, #a00d26 0%, #8a0b20 100%);
+        }
+        .submit-btn:active {
+            transform: translateY(0);
+            box-shadow: 0 4px 15px rgba(200, 16, 46, 0.4);
+        }
+        .submit-btn:disabled {
+            background: #a0a0a0;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+            opacity: 0.9;
+        }
+        .reset-btn { 
+            background: white; 
+            color: #4a5568; 
+            border: 2px solid #cbd5e0; 
+            padding: 17px 50px; 
+            border-radius: 10px; 
+            font-size: 18px; 
+            font-weight: 600; 
+            cursor: pointer; 
+            transition: all 0.3s; 
+            min-width: 220px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+        }
+        .reset-btn:hover { 
+            border-color: #a0aec0; 
+            color: #2d3748;
+            background: #f8fafc;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 12px rgba(0,0,0,0.12);
+        }
+        .reset-btn:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        }
+        .help-text { 
+            font-size: 14px; 
+            color: #718096; 
+            margin-top: 7px; 
+            font-style: italic; 
+            margin-left: 3px;
+            line-height: 1.4;
+        }
+        .info-box { 
+            background: #eef7ff; 
+            border-left: 4px solid #3182ce; 
+            padding: 16px 22px; 
+            border-radius: 0 10px 10px 0; 
+            margin: 25px 0 30px;
+            position: relative;
+            box-shadow: 0 2px 6px rgba(49, 130, 206, 0.1);
+        }
+        .info-box::before {
+            content: "ℹ️";
+            position: absolute;
+            left: -18px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: #3182ce;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 14px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+        }
+        .info-box p { 
+            color: #2c5282; 
+            font-size: 15px; 
+            margin: 0;
+            line-height: 1.55;
+            font-weight: 500;
+        }
+        .success-message { 
+            background: #d4edda; 
+            border: 2px solid #c3e6cb; 
+            color: #155724; 
+            padding: 22px; 
+            border-radius: 12px; 
+            margin: 25px 0 30px; 
+            display: none;
+            animation: fadeIn 0.45s ease-out;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.09);
+            font-weight: 500;
+            line-height: 1.5;
+        }
+        .success-message.show { 
+            display: block; 
+        }
+        .success-message strong {
+            display: block;
+            font-size: 19px;
+            margin-bottom: 8px;
+            color: #1e7e34;
+        }
+        .error-message {
+            color: #e53e3e;
+            background: #fff5f5;
+            border-left: 3px solid #e53e3e;
+            padding: 11px 16px;
+            border-radius: 0 6px 6px 0;
+            margin-top: 10px;
+            font-size: 14.5px;
+            display: none;
+            animation: fadeIn 0.3s;
+            font-weight: 500;
+            box-shadow: 0 1px 3px rgba(229, 62, 62, 0.1);
+        }
+        .error-message.show {
+            display: block;
+        }
+        .kit-types-container {
+            position: relative;
+        }
+        .kit-types-error {
+            color: #e53e3e;
+            font-weight: 600;
+            margin-top: 15px;
+            display: none;
+            animation: shake 0.5s;
+            padding-left: 5px;
+            font-size: 16px;
+        }
+        .kit-types-error.show {
+            display: block;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-12px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-6px); }
+            75% { transform: translateX(6px); }
+        }
+        .progress-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: #e2e8f0;
+            z-index: 2000;
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.4s ease;
+        }
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #c8102e, #a00d26, #c8102e);
+            border-radius: 0 2px 2px 0;
+            box-shadow: 0 0 8px rgba(200, 16, 46, 0.5);
+        }
+        @media (max-width: 768px) {
+            .form-row { 
+                grid-template-columns: 1fr; 
+            }
+            .form-content { 
+                padding: 28px; 
+            }
+            .header { 
+                padding: 30px 20px; 
+            }
+            .header h1 { 
+                font-size: 28px; 
+            }
+            .header p {
+                font-size: 16px;
+            }
+            .kit-type-grid { 
+                grid-template-columns: repeat(auto-fill, minmax(165px, 1fr)); 
+            }
+            .submit-section { 
+                flex-direction: column; 
+                align-items: stretch;
+            }
+            .submit-btn, .reset-btn {
+                min-width: auto;
+                padding: 16px;
+                font-size: 17px;
+            }
+            .section-title {
+                font-size: 24px;
+                margin-top: 25px;
+            }
+            .form-section {
+                padding: 22px;
+                margin-bottom: 28px;
+            }
+            .attachment-container {
+                padding: 20px;
+            }
+        }
+        @media (max-width: 480px) {
+            .container {
+                margin: 10px;
+                box-shadow: 0 8px 30px rgba(0,0,0,0.18);
+            }
+            .kit-type-grid {
+                grid-template-columns: 1fr;
+            }
+            .header h1 {
+                font-size: 26px;
+            }
+            .header p {
+                font-size: 15px;
+            }
+            .submit-btn, .reset-btn {
+                padding: 15px;
+                font-size: 16px;
+                border-radius: 9px;
+            }
+            .section-icon {
+                width: 42px;
+                height: 42px;
+                font-size: 28px;
+            }
+            .form-content {
+                padding: 22px;
+            }
+            .section-title {
+                font-size: 23px;
+            }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                transition: none !important;
+                animation: none !important;
+                transform: none !important;
+            }
+            .progress-container {
+                display: none;
+            }
+        }
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border-width: 0;
+        }
+        :focus-visible {
+            outline: 3px solid #ff6b6b !important;
+            outline-offset: 2px;
+        }
+        footer {
+            text-align: center;
+            margin-top: 25px;
+            color: #4a5568;
+            font-size: 15px;
+            padding: 15px;
+            font-weight: 500;
+        }
+        .demo-badge {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, #c8102e, #a00d26);
+            color: white;
+            padding: 8px 18px;
+            border-radius: 30px;
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.25);
+            z-index: 100;
+            animation: pulse 2s infinite;
+            font-size: 15px;
+        }
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(200, 16, 46, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(200, 16, 46, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(200, 16, 46, 0); }
+        }
+    </style>
+</head>
+<body>
+    <div class="progress-container" id="progressContainer">
+        <div class="progress-bar"></div>
+    </div>
+    
+    <div class="container">
+        <div class="header">
+            <div class="header-content">
+                <h1>HUDCO Equipment Solutions</h1>
+                <p>Professional Hydraulic Attachment Systems • Request Your Custom Quote Today</p>
+            </div>
+        </div>
+        <div class="form-content">
+            <div class="success-message" id="successMessage" role="alert">
+                <strong>✓ Quote Request Submitted Successfully!</strong>
+                <p>Thank you for your request. Our hydraulic systems specialist will contact you within 24 hours to discuss your requirements.</p>
+            </div>
+            <form id="quoteForm" novalidate>
+                <div class="form-section">
+                    <h2 class="section-title"><span class="section-icon">👤</span>Contact Information</h2>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="firstName">First Name <span class="required">*</span></label>
+                            <input type="text" id="firstName" name="firstName" required aria-required="true" placeholder="John">
+                        </div>
+                        <div class="form-group">
+                            <label for="lastName">Last Name <span class="required">*</span></label>
+                            <input type="text" id="lastName" name="lastName" required aria-required="true" placeholder="Doe">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="email">Email <span class="required">*</span></label>
+                            <input type="email" id="email" name="email" required aria-required="true" placeholder="john.doe@company.com">
+                            <div class="error-message" id="emailError">Please enter a valid email address</div>
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">Phone <span class="required">*</span></label>
+                            <input type="tel" id="phone" name="phone" required aria-required="true" pattern="[0-9+\-\s\(\)]{10,}" placeholder="(555) 123-4567">
+                            <div class="error-message" id="phoneError">Please enter a valid phone number</div>
+                        </div>
+                    </div>
+                    <div class="form-row single">
+                        <div class="form-group">
+                            <label for="company">Company Name</label>
+                            <input type="text" id="company" name="company" placeholder="ABC Construction Inc.">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h2 class="section-title"><span class="section-icon">🚜</span>Equipment Information</h2>
+                    <div class="info-box">
+                        <p><strong>Note:</strong> Please provide the make, model, and year of your primary equipment (excavator, backhoe, skid steer, etc.)</p>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="equipmentMake">Equipment Make <span class="required">*</span></label>
+                            <select id="equipmentMake" name="equipmentMake" required aria-required="true">
+                                <option value="">Select Make</option>
+                                <option value="Caterpillar">Caterpillar</option>
+                                <option value="John Deere">John Deere</option>
+                                <option value="Komatsu">Komatsu</option>
+                                <option value="Volvo">Volvo</option>
+                                <option value="Hitachi">Hitachi</option>
+                                <option value="Kobelco">Kobelco</option>
+                                <option value="Case">Case</option>
+                                <option value="Hyundai">Hyundai</option>
+                                <option value="Doosan">Doosan</option>
+                                <option value="Develon">Develon</option>
+                                <option value="Kubota">Kubota</option>
+                                <option value="Bobcat">Bobcat</option>
+                                <option value="Link-Belt">Link-Belt</option>
+                                <option value="Takeuchi">Takeuchi</option>
+                                <option value="Yanmar">Yanmar</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="equipmentModel">Equipment Model <span class="required">*</span></label>
+                            <input type="text" id="equipmentModel" name="equipmentModel" placeholder="e.g., 320 GC, PC200LC-11, ZX210" required aria-required="true">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="equipmentYear">Year of Manufacture <span class="required">*</span></label>
+                            <input type="number" id="equipmentYear" name="equipmentYear" min="1980" max="2026" placeholder="2022" required aria-required="true">
+                            <div class="error-message" id="yearError">Please enter a valid year between 1980 and 2026</div>
+                        </div>
+                        <div class="form-group">
+                            <label for="serialNumber">Serial Number (if available)</label>
+                            <input type="text" id="serialNumber" name="serialNumber" placeholder="Optional - helps with precise fitment">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h2 class="section-title"><span class="section-icon">🔧</span>Attachment Information</h2>
+                    <div class="info-box">
+                        <p><strong>Important:</strong> List all hydraulic attachments you plan to use. You can add multiple attachments. This helps us design the perfect hydraulic circuit configuration.</p>
+                    </div>
+                    <div id="attachmentsContainer">
+                        <div class="attachment-container" data-attachment-index="1">
+                            <div class="attachment-header">
+                                <span class="attachment-number">Attachment #1</span>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="attachmentType1">Attachment Type <span class="required">*</span></label>
+                                    <select id="attachmentType1" name="attachmentType[]" required aria-required="true">
+                                        <option value="">Select Type</option>
+                                        <option value="Hydraulic Breaker/Hammer">Hydraulic Breaker/Hammer</option>
+                                        <option value="Hydraulic Thumb">Hydraulic Thumb</option>
+                                        <option value="Hydraulic Shear">Hydraulic Shear</option>
+                                        <option value="Hydraulic Crusher">Hydraulic Crusher</option>
+                                        <option value="Hydraulic Grapple">Hydraulic Grapple</option>
+                                        <option value="Hydraulic Compactor">Hydraulic Compactor</option>
+                                        <option value="Tilt Bucket">Tilt Bucket</option>
+                                        <option value="Auger">Auger</option>
+                                        <option value="Mulcher">Mulcher</option>
+                                        <option value="Brush Cutter">Brush Cutter</option>
+                                        <option value="Rotating Grapple">Rotating Grapple</option>
+                                        <option value="Pulverizer">Pulverizer</option>
+                                        <option value="Quick Coupler">Quick Coupler</option>
+                                        <option value="Magnet">Magnet</option>
+                                        <option value="Other">Other</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="attachmentMake1">Attachment Make <span class="required">*</span></label>
+                                    <input type="text" id="attachmentMake1" name="attachmentMake[]" placeholder="e.g., Stanley, NPK, AMI, MB" required aria-required="true">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="attachmentModel1">Attachment Model <span class="required">*</span></label>
+                                    <input type="text" id="attachmentModel1" name="attachmentModel[]" placeholder="e.g., MB1200, H12X, GXR30" required aria-required="true">
+                                </div>
+                                <div class="form-group">
+                                    <label for="attachmentYear1">Year</label>
+                                    <input type="number" id="attachmentYear1" name="attachmentYear[]" min="1980" max="2026" placeholder="Optional">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button type="button" class="add-attachment" id="addAttachmentBtn">
+                        <span>➕</span> Add Another Attachment
+                    </button>
+                </div>
+
+                <div class="form-section">
+                    <h2 class="section-title"><span class="section-icon">⚙️</span>Hydraulic Kit Requirements</h2>
+                    <div class="info-box">
+                        <p><strong>Select all kit types that apply:</strong> Choose the hydraulic circuits and functions you need. Unsure? Select "Custom Application" and describe your needs below.</p>
+                    </div>
+                    <div class="form-group kit-types-container">
+                        <label>Kit Type(s) Needed <span class="required">*</span></label>
+                        <div class="kit-type-grid" id="kitTypesContainer">
+                            <div class="kit-option" data-value="Single-Acting Kit (Breaker/Hammer)">
+                                <input type="checkbox" id="kit1" name="kitTypes" value="Single-Acting Kit (Breaker/Hammer)">
+                                <label for="kit1">Single-Acting Kit<br><small>(Breaker/Hammer)</small></label>
+                            </div>
+                            <div class="kit-option" data-value="Double-Acting Kit (Grapple/Thumb)">
+                                <input type="checkbox" id="kit2" name="kitTypes" value="Double-Acting Kit (Grapple/Thumb)">
+                                <label for="kit2">Double-Acting Kit<br><small>(Grapple/Thumb)</small></label>
+                            </div>
+                            <div class="kit-option" data-value="Dual-Purpose Kit">
+                                <input type="checkbox" id="kit3" name="kitTypes" value="Dual-Purpose Kit">
+                                <label for="kit3">Dual-Purpose Kit<br><small>(Convertible)</small></label>
+                            </div>
+                            <div class="kit-option" data-value="Thumb Kit">
+                                <input type="checkbox" id="kit4" name="kitTypes" value="Thumb Kit">
+                                <label for="kit4">Thumb Kit</label>
+                            </div>
+                            <div class="kit-option" data-value="Breaker & Thumb Combo">
+                                <input type="checkbox" id="kit5" name="kitTypes" value="Breaker & Thumb Combo">
+                                <label for="kit5">Breaker & Thumb<br><small>(Combo)</small></label>
+                            </div>
+                            <div class="kit-option" data-value="Rotation Kit">
+                                <input type="checkbox" id="kit6" name="kitTypes" value="Rotation Kit">
+                                <label for="kit6">Rotation Kit</label>
+                            </div>
+                            <div class="kit-option" data-value="Tilt Kit">
+                                <input type="checkbox" id="kit7" name="kitTypes" value="Tilt Kit">
+                                <label for="kit7">Tilt Kit</label>
+                            </div>
+                            <div class="kit-option" data-value="Rotate/Tilt Combo">
+                                <input type="checkbox" id="kit8" name="kitTypes" value="Rotate/Tilt Combo">
+                                <label for="kit8">Rotate/Tilt Combo</label>
+                            </div>
+                            <div class="kit-option" data-value="Shear Kit">
+                                <input type="checkbox" id="kit9" name="kitTypes" value="Shear Kit">
+                                <label for="kit9">Shear Kit</label>
+                            </div>
+                            <div class="kit-option" data-value="Breaker & Shear Combo">
+                                <input type="checkbox" id="kit10" name="kitTypes" value="Breaker & Shear Combo">
+                                <label for="kit10">Breaker & Shear<br><small>(Combo)</small></label>
+                            </div>
+                            <div class="kit-option" data-value="Quick Coupler Kit">
+                                <input type="checkbox" id="kit11" name="kitTypes" value="Quick Coupler Kit">
+                                <label for="kit11">Quick Coupler Kit</label>
+                            </div>
+                            <div class="kit-option" data-value="Multi-Function Kit">
+                                <input type="checkbox" id="kit12" name="kitTypes" value="Multi-Function Kit">
+                                <label for="kit12">Multi-Function Kit</label>
+                            </div>
+                            <div class="kit-option" data-value="High-Flow Kit">
+                                <input type="checkbox" id="kit13" name="kitTypes" value="High-Flow Kit">
+                                <label for="kit13">High-Flow Kit<br><small>(Mulcher/Cutter)</small></label>
+                            </div>
+                            <div class="kit-option" data-value="Case Drain Kit">
+                                <input type="checkbox" id="kit14" name="kitTypes" value="Case Drain Kit">
+                                <label for="kit14">Case Drain Kit</label>
+                            </div>
+                            <div class="kit-option" data-value="Conversion Kit">
+                                <input type="checkbox" id="kit15" name="kitTypes" value="Conversion Kit">
+                                <label for="kit15">Conversion Kit</label>
+                            </div>
+                            <div class="kit-option" data-value="Custom Application">
+                                <input type="checkbox" id="kit16" name="kitTypes" value="Custom Application">
+                                <label for="kit16">Custom Application</label>
+                            </div>
+                        </div>
+                        <div class="kit-types-error" id="kitTypeError">❗ Please select at least one kit type</div>
+                    </div>
+                    <div class="form-row single" style="margin-top: 28px;">
+                        <div class="form-group">
+                            <label for="kitDetails">Additional Kit Details / Special Requirements</label>
+                            <textarea id="kitDetails" name="kitDetails" placeholder="Please describe your specific needs: flow rates (GPM), pressure requirements (PSI), mounting preferences, multiple attachment switching needs, or other special requirements..."></textarea>
+                            <span class="help-text">Example: "Need to run breaker (18 GPM) and thumb (12 GPM) simultaneously on Cat 330 with quick coupler"</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h2 class="section-title"><span class="section-icon">📋</span>Project Information</h2>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="timeline">Timeline</label>
+                            <select id="timeline" name="timeline">
+                                <option value="">Select Timeline</option>
+                                <option value="Immediate (Within 1 week)">Immediate (Within 1 week)</option>
+                                <option value="1-2 Weeks">1-2 Weeks</option>
+                                <option value="2-4 Weeks">2-4 Weeks</option>
+                                <option value="1-2 Months">1-2 Months</option>
+                                <option value="Planning/Research Phase">Planning/Research Phase</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="referralSource">How did you hear about us?</label>
+                            <select id="referralSource" name="referralSource">
+                                <option value="">Select One</option>
+                                <option value="Web Search">Web Search</option>
+                                <option value="Dealer Referral">Dealer Referral</option>
+                                <option value="Previous Customer">Previous Customer</option>
+                                <option value="Trade Show">Trade Show</option>
+                                <option value="Social Media">Social Media</option>
+                                <option value="Word of Mouth">Word of Mouth</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row single">
+                        <div class="form-group">
+                            <label for="comments">Additional Comments or Questions</label>
+                            <textarea id="comments" name="comments" placeholder="Any additional information that would help us provide the most accurate quote and solution for your needs..."></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="submit-section">
+                    <button type="submit" class="submit-btn" id="submitBtn">
+                        <span>📤</span> Submit Quote Request
+                    </button>
+                    <button type="reset" class="reset-btn">
+                        <span>↺</span> Clear Form
+                    </button>
+                </div>
+            </form>
+            <footer>
+                <p>HUDCO Equipment Solutions • Hydraulic Systems Specialists Since 1978</p>
+                <p>Questions? Call us: (800) 555-HUDCO • Email: quotes@hudco.com</p>
+            </footer>
+        </div>
+    </div>
+    
+    <div class="demo-badge">✅ FULLY FUNCTIONAL DEMO • No data is submitted</div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // DOM Elements
+            const quoteForm = document.getElementById('quoteForm');
+            const addAttachmentBtn = document.getElementById('addAttachmentBtn');
+            const attachmentsContainer = document.getElementById('attachmentsContainer');
+            const kitTypeOptions = document.querySelectorAll('.kit-option');
+            const kitTypeError = document.getElementById('kitTypeError');
+            const submitBtn = document.getElementById('submitBtn');
+            const progressContainer = document.getElementById('progressContainer');
+            const successMessage = document.getElementById('successMessage');
+            
+            // Form validation elements
+            const emailInput = document.getElementById('email');
+            const emailError = document.getElementById('emailError');
+            const phoneInput = document.getElementById('phone');
+            const phoneError = document.getElementById('phoneError');
+            const yearInput = document.getElementById('equipmentYear');
+            const yearError = document.getElementById('yearError');
+            
+            let attachmentCount = 1;
+            let formSubmitted = false;
+            
+            // Initialize kit type selection behavior
+            kitTypeOptions.forEach(option => {
+                const checkbox = option.querySelector('input[type="checkbox"]');
+                
+                option.addEventListener('click', function(e) {
+                    if (!e.target.closest('input')) {
+                        checkbox.checked = !checkbox.checked;
+                        updateKitTypeSelection(this);
+                    }
+                    kitTypeError.classList.remove('show');
+                });
+                
+                checkbox.addEventListener('change', function() {
+                    updateKitTypeSelection(option);
+                    kitTypeError.classList.remove('show');
+                });
+            });
+            
+            function updateKitTypeSelection(option) {
+                const checkbox = option.querySelector('input[type="checkbox"]');
+                if (checkbox.checked) {
+                    option.classList.add('selected');
+                } else {
+                    option.classList.remove('selected');
+                }
+            }
+            
+            // Add attachment functionality
+            addAttachmentBtn.addEventListener('click', addAttachment);
+            
+            function addAttachment() {
+                attachmentCount++;
+                const attachmentHTML = `
+                    <div class="attachment-container" data-attachment-index="${attachmentCount}">
+                        <div class="attachment-header">
+                            <span class="attachment-number">Attachment #${attachmentCount}</span>
+                            <button type="button" class="remove-attachment" aria-label="Remove attachment ${attachmentCount}">
+                                <span>🗑️</span> Remove
+                            </button>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="attachmentType${attachmentCount}">Attachment Type <span class="required">*</span></label>
+                                <select id="attachmentType${attachmentCount}" name="attachmentType[]" required aria-required="true">
+                                    <option value="">Select Type</option>
+                                    <option value="Hydraulic Breaker/Hammer">Hydraulic Breaker/Hammer</option>
+                                    <option value="Hydraulic Thumb">Hydraulic Thumb</option>
+                                    <option value="Hydraulic Shear">Hydraulic Shear</option>
+                                    <option value="Hydraulic Crusher">Hydraulic Crusher</option>
+                                    <option value="Hydraulic Grapple">Hydraulic Grapple</option>
+                                    <option value="Hydraulic Compactor">Hydraulic Compactor</option>
+                                    <option value="Tilt Bucket">Tilt Bucket</option>
+                                    <option value="Auger">Auger</option>
+                                    <option value="Mulcher">Mulcher</option>
+                                    <option value="Brush Cutter">Brush Cutter</option>
+                                    <option value="Rotating Grapple">Rotating Grapple</option>
+                                    <option value="Pulverizer">Pulverizer</option>
+                                    <option value="Quick Coupler">Quick Coupler</option>
+                                    <option value="Magnet">Magnet</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="attachmentMake${attachmentCount}">Attachment Make <span class="required">*</span></label>
+                                <input type="text" id="attachmentMake${attachmentCount}" name="attachmentMake[]" placeholder="e.g., Stanley, NPK, AMI" required aria-required="true">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="attachmentModel${attachmentCount}">Attachment Model <span class="required">*</span></label>
+                                <input type="text" id="attachmentModel${attachmentCount}" name="attachmentModel[]" placeholder="e.g., MB1200, H12X" required aria-required="true">
+                            </div>
+                            <div class="form-group">
+                                <label for="attachmentYear${attachmentCount}">Year</label>
+                                <input type="number" id="attachmentYear${attachmentCount}" name="attachmentYear[]" min="1980" max="2026" placeholder="Optional">
+                            </div>
+                        </div>
+                    </div>
+                `;
+                attachmentsContainer.insertAdjacentHTML('beforeend', attachmentHTML);
+                
+                // Add event listener to the new remove button
+                const newAttachment = attachmentsContainer.lastElementChild;
+                const removeBtn = newAttachment.querySelector('.remove-attachment');
+                removeBtn.addEventListener('click', function() {
+                    removeAttachment(this);
+                });
+                
+                // Scroll to the new attachment smoothly
+                setTimeout(() => {
+                    newAttachment.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }, 100);
+            }
+            
+            // Remove attachment functionality
+            function removeAttachment(button) {
+                const attachmentContainer = button.closest('.attachment-container');
+                if (document.querySelectorAll('.attachment-container').length > 1) {
+                    attachmentContainer.remove();
+                    updateAttachmentNumbers();
+                } else {
+                    alert('At least one attachment is required to configure a hydraulic kit.');
+                }
+            }
+            
+            function updateAttachmentNumbers() {
+                const attachments = document.querySelectorAll('.attachment-container');
+                attachments.forEach((att, index) => {
+                    const num = index + 1;
+                    att.setAttribute('data-attachment-index', num);
+                    att.querySelector('.attachment-number').textContent = `Attachment #${num}`;
+                    
+                    // Update IDs and for attributes for accessibility
+                    const typeSelect = att.querySelector('select[name="attachmentType[]"]');
+                    const makeInput = att.querySelector('input[name="attachmentMake[]"]');
+                    const modelInput = att.querySelector('input[name="attachmentModel[]"]');
+                    const yearInput = att.querySelector('input[name="attachmentYear[]"]');
+                    
+                    if (typeSelect) typeSelect.id = `attachmentType${num}`;
+                    if (makeInput) makeInput.id = `attachmentMake${num}`;
+                    if (modelInput) modelInput.id = `attachmentModel${num}`;
+                    if (yearInput) yearInput.id = `attachmentYear${num}`;
+                });
+                attachmentCount = attachments.length;
+            }
+            
+            // Form validation
+            function validateForm() {
+                let isValid = true;
+                
+                // Reset errors
+                document.querySelectorAll('.error-message').forEach(el => {
+                    el.classList.remove('show');
+                });
+                kitTypeError.classList.remove('show');
+                
+                // Email validation
+                if (emailInput.value && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailInput.value)) {
+                    emailError.classList.add('show');
+                    isValid = false;
+                    if (!formSubmitted) emailInput.focus();
+                }
+                
+                // Phone validation
+                if (phoneInput.value && !/^[0-9+\-\s\(\)]{10,}$/.test(phoneInput.value)) {
+                    phoneError.classList.add('show');
+                    isValid = false;
+                    if (!formSubmitted) phoneInput.focus();
+                }
+                
+                // Year validation
+                const yearValue = parseInt(yearInput.value);
+                if (yearInput.value && (isNaN(yearValue) || yearValue < 1980 || yearValue > 2026)) {
+                    yearError.classList.add('show');
+                    isValid = false;
+                    if (!formSubmitted) yearInput.focus();
+                }
+                
+                // Kit types validation
+                const selectedKits = document.querySelectorAll('input[name="kitTypes"]:checked');
+                if (selectedKits.length === 0) {
+                    kitTypeError.classList.add('show');
+                    isValid = false;
+                    if (!formSubmitted) {
+                        document.querySelector('.kit-types-container').scrollIntoView({ 
+                            behavior: 'smooth', 
+                            block: 'center' 
+                        });
+                    }
+                }
+                
+                return isValid;
+            }
+            
+            // Form submission handling
+            quoteForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                formSubmitted = true;
+                
+                if (!validateForm()) {
+                    formSubmitted = false;
+                    return;
+                }
+                
+                // Show progress bar animation
+                progressContainer.style.transform = 'scaleX(1)';
+                
+                // Disable submit button
+                submitBtn.disabled = true;
+                const originalText = submitBtn.innerHTML;
+                submitBtn.innerHTML = '<span>⏳</span> Processing Request...';
+                
+                // Simulate form submission delay (in real app, this would be an API call)
+                setTimeout(() => {
+                    // Collect form data (in a real app, this would be sent to a server)
+                    const formData = new FormData(quoteForm);
+                    const data = {
+                        contact: {
+                            firstName: formData.get('firstName'),
+                            lastName: formData.get('lastName'),
+                            email: formData.get('email'),
+                            phone: formData.get('phone'),
+                            company: formData.get('company')
+                        },
+                        equipment: {
+                            make: formData.get('equipmentMake'),
+                            model: formData.get('equipmentModel'),
+                            year: formData.get('equipmentYear'),
+                            serialNumber: formData.get('serialNumber')
+                        },
+                        attachments: [],
+                        kitTypes: [],
+                        kitDetails: formData.get('kitDetails'),
+                        project: {
+                            timeline: formData.get('timeline'),
+                            referralSource: formData.get('referralSource'),
+                            comments: formData.get('comments')
+                        }
+                    };
+                    
+                    // Process attachments
+                    const attachmentTypes = formData.getAll('attachmentType[]');
+                    const attachmentMakes = formData.getAll('attachmentMake[]');
+                    const attachmentModels = formData.getAll('attachmentModel[]');
+                    const attachmentYears = formData.getAll('attachmentYear[]');
+                    
+                    for (let i = 0; i < attachmentTypes.length; i++) {
+                        data.attachments.push({
+                            type: attachmentTypes[i],
+                            make: attachmentMakes[i],
+                            model: attachmentModels[i],
+                            year: attachmentYears[i]
+                        });
+                    }
+                    
+                    // Process selected kit types
+                    document.querySelectorAll('input[name="kitTypes"]:checked').forEach(kit => {
+                        data.kitTypes.push(kit.value);
+                    });
+                    
+                    // Log data to console for demonstration
+                    console.log('✅ HUDCO Quote Request Submitted:', data);
+                    console.log('ℹ️ In a production environment, this data would be sent to your server');
+                    
+                    // Show success message
+                    successMessage.classList.add('show');
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                    
+                    // Reset form after delay
+                    setTimeout(() => {
+                        quoteForm.reset();
+                        
+                        // Reset attachments to initial state
+                        while (attachmentsContainer.children.length > 1) {
+                            attachmentsContainer.removeChild(attachmentsContainer.lastChild);
+                        }
+                        attachmentCount = 1;
+                        updateAttachmentNumbers();
+                        
+                        // Reset kit type selections
+                        document.querySelectorAll('.kit-option').forEach(option => {
+                            option.classList.remove('selected');
+                            const checkbox = option.querySelector('input[type="checkbox"]');
+                            checkbox.checked = false;
+                        });
+                        
+                        // Hide success message after delay
+                        setTimeout(() => {
+                            successMessage.classList.remove('show');
+                        }, 6000);
+                        
+                        // Re-enable submit button
+                        submitBtn.disabled = false;
+                        submitBtn.innerHTML = originalText;
+                        
+                        // Reset progress bar
+                        setTimeout(() => {
+                            progressContainer.style.transform = 'scaleX(0)';
+                        }, 300);
+                        
+                        // Reset form submission flag
+                        formSubmitted = false;
+                        
+                        // Show confirmation toast
+                        alert('✅ Quote request submitted successfully!\n\nA HUDCO specialist will contact you within 24 hours. For immediate assistance, call (800) 555-HUDCO.');
+                    }, 2800);
+                }, 1800);
+            });
+            
+            // Form reset handling
+            quoteForm.addEventListener('reset', function(e) {
+                setTimeout(() => {
+                    // Reset attachments to initial state
+                    while (attachmentsContainer.children.length > 1) {
+                        attachmentsContainer.removeChild(attachmentsContainer.lastChild);
+                    }
+                    attachmentCount = 1;
+                    updateAttachmentNumbers();
+                    
+                    // Reset kit type selections
+                    document.querySelectorAll('.kit-option').forEach(option => {
+                        option.classList.remove('selected');
+                        const checkbox = option.querySelector('input[type="checkbox"]');
+                        checkbox.checked = false;
+                    });
+                    
+                    // Hide all error messages
+                    document.querySelectorAll('.error-message, .kit-types-error').forEach(el => {
+                        el.classList.remove('show');
+                    });
+                    
+                    // Hide success message
+                    successMessage.classList.remove('show');
+                    
+                    // Reset progress bar
+                    progressContainer.style.transform = 'scaleX(0)';
+                    
+                    // Re-enable submit button
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = '<span>📤</span> Submit Quote Request';
+                    
+                    formSubmitted = false;
+                }, 10);
+            });
+            
+            // Real-time validation
+            emailInput.addEventListener('blur', validateForm);
+            phoneInput.addEventListener('blur', validateForm);
+            yearInput.addEventListener('blur', validateForm);
+            
+            // Kit type containers should hide error when interacted with
+            document.querySelectorAll('.kit-option, input[name="kitTypes"]').forEach(el => {
+                el.addEventListener('click', () => {
+                    kitTypeError.classList.remove('show');
+                });
+            });
+            
+            // Initialize remove buttons for dynamically added attachments
+            document.querySelectorAll('.remove-attachment').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    removeAttachment(this);
+                });
+            });
+            
+            // Add subtle animation to form sections on page load
+            setTimeout(() => {
+                document.querySelectorAll('.form-section').forEach((section, index) => {
+                    section.style.opacity = '0';
+                    section.style.transform = 'translateY(20px)';
+                    section.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                    
+                    setTimeout(() => {
+                        section.style.opacity = '1';
+                        section.style.transform = 'translateY(0)';
+                    }, 300 + (index * 100));
+                });
+            }, 100);
+        });
+    </script>
+</body>
+</html>
